@@ -27,14 +27,16 @@ class BankAccountTest {
         assertTrue(BankAccount.isEmailValid( "a@b.com"));   // valid email address
         assertFalse( BankAccount.isEmailValid(""));         // empty string
 
-        assertFalse( BankAccount.isEmailValid("abc-@mail.com"));
+        // An underscore, peroid or dash must be followed by an alphanumeric character
+        assertFalse( BankAccount.isEmailValid("abc-@mail.com")); 
         assertFalse( BankAccount.isEmailValid("abc..def@mail.com")); 
         assertFalse( BankAccount.isEmailValid(".abc@mail.com")); 
-        assertFalse( BankAccount.isEmailValid("abc#def@mail.com")); 
-        assertFalse( BankAccount.isEmailValid("abc.def@mail.c")); 
-        assertFalse( BankAccount.isEmailValid("abc.def@mail#archive.com")); 
-        assertFalse( BankAccount.isEmailValid("abc.def@mail")); 
-        assertFalse( BankAccount.isEmailValid("abc.def@mail..com")
+        assertFalse( BankAccount.isEmailValid("abc#def@mail.com")); // Illegal special character
+        
+        assertFalse( BankAccount.isEmailValid("abc.def@mail.c")); // The TLD must be at least 2 chars
+        assertFalse( BankAccount.isEmailValid("abc.def@mail#archive.com")); // Domains cannot contain special characters other than dashes
+        assertFalse( BankAccount.isEmailValid("abc.def@mail")); // A TLD is required
+        assertFalse( BankAccount.isEmailValid("abc.def@mail..com")); // Cannot have two "." in a row like that
     }
     
     @Test
