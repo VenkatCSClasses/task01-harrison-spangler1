@@ -40,11 +40,28 @@ public class BankAccount {
 
 
     public static boolean isEmailValid(String email){
-        if (email.indexOf('@') == -1){
+        // If no email provided, return false
+        if (email == null){
             return false;
         }
-        else {
-            return true;
+
+        // Check email format and special character usage for if it is valid
+        String emailRegex = "^[A-Za-z0-9]+([._-][A-Za-z0-9]+)*@[A-Za-z0-9]+(-[A-Za-z0-9]+)*(\\.[A-Za-z0-9]+(-[A-Za-z0-9]+)*)+$";
+        if (!email.matches(emailRegex)) {
+            return false;
         }
+
+        // Find the domain (after the "@")
+        String domain = email.substring(email.indexOf('@') + 1);
+        int lastDot = domain.lastIndexOf('.');
+
+        // Find TLD
+        if (lastDot == -1 || lastDot == domain.length() - 1){
+            return false; // No TLD
+        }
+        String tld = domain.substring(lastDot + 1);
+
+        // Check if the TLD is at least 2 characters and contains no illegal characters
+        return tld.matches("[A-Za-z]{2,}");
     }
 }
