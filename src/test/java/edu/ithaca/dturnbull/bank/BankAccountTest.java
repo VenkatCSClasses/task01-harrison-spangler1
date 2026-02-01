@@ -14,92 +14,133 @@ class BankAccountTest {
     }
 
     @Test
-    void withdrawTest() throws InsufficientFundsException{
-        BankAccount bankAccount = new BankAccount("a@b.com", 200);
-        bankAccount.withdraw(100);
-
-        assertEquals(100, bankAccount.getBalance(), 0.001);
-        assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(300));
+    void withdraw_middle_valid() throws InsufficientFundsException {
+        // Equivalence class of 0 < amount < balance, middle
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        acct.withdraw(100.0); // middle
+        assertEquals(100.0, acct.getBalance(), 0.001);
     }
 
     @Test
-void isEmailValidTest(){
-    assertTrue(BankAccount.isEmailValid( "a@b.com")); // valid email address (equivalence class of a valid email)
+    void withdraw_zero_boundary() throws InsufficientFundsException {
+        // Equivalence class of amount == 0, border
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        acct.withdraw(0.0); // border
+        assertEquals(200.0, acct.getBalance(), 0.001);
+    }
+
+    @Test
+    void withdraw_equals_balance_boundary() throws InsufficientFundsException {
+        // Equivalence class of amount == balance, border
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        acct.withdraw(200.0); // border
+        assertEquals(0.0, acct.getBalance(), 0.001);
+    }
+
+    @Test
+    void withdraw_greater_than_balance_invalid() {
+        // Equivalence class of amount > balance, border
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+
+        assertThrows(InsufficientFundsException.class, () -> acct.withdraw(200.01)); // border
+        assertEquals(200.0, acct.getBalance(), 0.001); // balance unchanged
+    }
+
+    @Test
+    void withdraw_negative_invalid() {
+        // Equivalence class of amount < 0, border
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+
+        assertThrows(IllegalArgumentException.class, () -> acct.withdraw(-0.01)); // border
+        assertEquals(200.0, acct.getBalance(), 0.001); // balance unchanged
+    }
     
-    assertFalse( BankAccount.isEmailValid("")); // empty string, is a border case showing how an empty string should be handled.
+    @Test
+    void withdraw_negative_middle_invalid() {
+        // Equivalence class of amount < 0, middle
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        assertThrows(IllegalArgumentException.class, () -> acct.withdraw(-50.0)); // middle
+    }
 
-    // These belong in the equivalence class that an underscore, peroid or dash must be followed by an alphanumeric character
-    assertFalse( BankAccount.isEmailValid("abc-@mail.com")); // Prefix cannot end with a "-", (border case)
-    assertFalse( BankAccount.isEmailValid("abc..def@mail.com")); // Cannot have two "." in a row
-    assertFalse( BankAccount.isEmailValid(".abc@mail.com")); // Cannot start with a "." (border case)
-    assertFalse( BankAccount.isEmailValid("abc#def@mail.com")); // Illegal special character
-    
-    // These belong in the equivalence class that state what characters are allowed in the domain
-    assertFalse( BankAccount.isEmailValid("abc.def@mail.c")); // The TLD must be at least 2 chars, border case
-    assertFalse( BankAccount.isEmailValid("abc.def@mail#archive.com")); // Domains cannot contain special characters other than dashes
-    assertFalse( BankAccount.isEmailValid("abc.def@mail")); // A TLD is required
-    assertFalse( BankAccount.isEmailValid("abc.def@mail..com")); // Cannot have two "." in a row like that (border case)
 
-    // Equivalence class of valid email prefixes 
-    assertTrue(BankAccount.isEmailValid("abc-def@mail.com")); // valid use of "-" in local part, middle
-    assertTrue(BankAccount.isEmailValid("abc.def@mail.com")); // valid use of "." in local part, middle
-    assertTrue(BankAccount.isEmailValid("abc_def@mail.com")); // valid use of "_" in local part, middle
+    @Test
+    void isEmailValidTest(){
+        assertTrue(BankAccount.isEmailValid( "a@b.com")); // valid email address (equivalence class of a valid email)
+        
+        assertFalse( BankAccount.isEmailValid("")); // empty string, is a border case showing how an empty string should be handled.
 
-    // Equivalence class of valid email domains 
-    assertTrue(BankAccount.isEmailValid("abc.def@mail-archive.com")); // valid "-" in domain label, middle
-    assertTrue(BankAccount.isEmailValid("abc.def@mail.co")); // valid 2-letter TLD, border
+        // These belong in the equivalence class that an underscore, peroid or dash must be followed by an alphanumeric character
+        assertFalse( BankAccount.isEmailValid("abc-@mail.com")); // Prefix cannot end with a "-", (border case)
+        assertFalse( BankAccount.isEmailValid("abc..def@mail.com")); // Cannot have two "." in a row
+        assertFalse( BankAccount.isEmailValid(".abc@mail.com")); // Cannot start with a "." (border case)
+        assertFalse( BankAccount.isEmailValid("abc#def@mail.com")); // Illegal special character
+        
+        // These belong in the equivalence class that state what characters are allowed in the domain
+        assertFalse( BankAccount.isEmailValid("abc.def@mail.c")); // The TLD must be at least 2 chars, border case
+        assertFalse( BankAccount.isEmailValid("abc.def@mail#archive.com")); // Domains cannot contain special characters other than dashes
+        assertFalse( BankAccount.isEmailValid("abc.def@mail")); // A TLD is required
+        assertFalse( BankAccount.isEmailValid("abc.def@mail..com")); // Cannot have two "." in a row like that (border case)
 
-    // Equivalence class of invalid inputs
-    assertFalse(BankAccount.isEmailValid(null)); // null string should be invalid, border
+        // Equivalence class of valid email prefixes 
+        assertTrue(BankAccount.isEmailValid("abc-def@mail.com")); // valid use of "-" in local part, middle
+        assertTrue(BankAccount.isEmailValid("abc.def@mail.com")); // valid use of "." in local part, middle
+        assertTrue(BankAccount.isEmailValid("abc_def@mail.com")); // valid use of "_" in local part, middle
 
-    // Equivalence class of '@' symbol rules
-    assertFalse(BankAccount.isEmailValid("abcdef.mail.com")); // missing '@', middle
-    assertFalse(BankAccount.isEmailValid("abc@@mail.com")); // more than one '@', border
-    assertFalse(BankAccount.isEmailValid("@mail.com")); // missing local part, border
-    assertFalse(BankAccount.isEmailValid("abc@")); // missing domain part, border
+        // Equivalence class of valid email domains 
+        assertTrue(BankAccount.isEmailValid("abc.def@mail-archive.com")); // valid "-" in domain label, middle
+        assertTrue(BankAccount.isEmailValid("abc.def@mail.co")); // valid 2-letter TLD, border
 
-    // Border cases of . in local part
-    assertFalse(BankAccount.isEmailValid(".a@mail.com")); // invalid use of '.'', border
-    assertTrue(BankAccount.isEmailValid("a.b@mail.com")); // valid use of '.'', border
+        // Equivalence class of invalid inputs
+        assertFalse(BankAccount.isEmailValid(null)); // null string should be invalid, border
 
-    // Border cases of - in local part
-    assertFalse(BankAccount.isEmailValid("a-@mail.com")); // invalid use of '-', border
-    assertTrue(BankAccount.isEmailValid("a-b@mail.com")); // valid use of '-', border
+        // Equivalence class of '@' symbol rules
+        assertFalse(BankAccount.isEmailValid("abcdef.mail.com")); // missing '@', middle
+        assertFalse(BankAccount.isEmailValid("abc@@mail.com")); // more than one '@', border
+        assertFalse(BankAccount.isEmailValid("@mail.com")); // missing local part, border
+        assertFalse(BankAccount.isEmailValid("abc@")); // missing domain part, border
 
-    // Border case of consecutive dots in local part
-    assertFalse(BankAccount.isEmailValid("ab..c@mail.com")); // invalid use of '..', border
-    assertTrue(BankAccount.isEmailValid("ab.c@mail.com")); // valid use of '.', other border
+        // Border cases of . in local part
+        assertFalse(BankAccount.isEmailValid(".a@mail.com")); // invalid use of '.'', border
+        assertTrue(BankAccount.isEmailValid("a.b@mail.com")); // valid use of '.'', border
 
-    // Border cases of domain must contain a dot
-    assertFalse(BankAccount.isEmailValid("abc@mail")); // invalid, missing '.' in domain, border
-    assertTrue(BankAccount.isEmailValid("abc@mail.com")); // valid use of '.' in domain, border
+        // Border cases of - in local part
+        assertFalse(BankAccount.isEmailValid("a-@mail.com")); // invalid use of '-', border
+        assertTrue(BankAccount.isEmailValid("a-b@mail.com")); // valid use of '-', border
 
-    // Border cases of consecutive dots in domain
-    assertFalse(BankAccount.isEmailValid("abc@mail..com")); // invalid use of '..' in domain, border
-    assertTrue(BankAccount.isEmailValid("abc@mail.com")); // valid use of '.' in domain, other border
+        // Border case of consecutive dots in local part
+        assertFalse(BankAccount.isEmailValid("ab..c@mail.com")); // invalid use of '..', border
+        assertTrue(BankAccount.isEmailValid("ab.c@mail.com")); // valid use of '.', other border
 
-    // Equivalence class of domain label cannot start/end with a -
-    assertFalse(BankAccount.isEmailValid("abc@-mail.com")); // invalid use of '-', border
-    assertFalse(BankAccount.isEmailValid("abc@mail-.com")); // invalid use of '-', border
-    assertTrue(BankAccount.isEmailValid("abc@mail-archive.com")); // valid use of '-' in domain label, other border
+        // Border cases of domain must contain a dot
+        assertFalse(BankAccount.isEmailValid("abc@mail")); // invalid, missing '.' in domain, border
+        assertTrue(BankAccount.isEmailValid("abc@mail.com")); // valid use of '.' in domain, border
 
-    // Equivalence class of domain cannot start/end with a .
-    assertFalse(BankAccount.isEmailValid("abc@.mail.com")); // invalid use of '.', border
-    assertFalse(BankAccount.isEmailValid("abc@mail.com.")); // invalid use of '.', border
-    assertTrue(BankAccount.isEmailValid("abc@mail.com")); // valid use of '.', other border
+        // Border cases of consecutive dots in domain
+        assertFalse(BankAccount.isEmailValid("abc@mail..com")); // invalid use of '..' in domain, border
+        assertTrue(BankAccount.isEmailValid("abc@mail.com")); // valid use of '.' in domain, other border
 
-    /* 
-    Notes:
-    I would add more checks for in the equivalence class of valid email prefixes including the cases of:
-        - Valid use of dashes in the email prefix
-        - Valid use of "." in the email prefix
-        - Valid use of "_" in the email prefix
+        // Equivalence class of domain label cannot start/end with a -
+        assertFalse(BankAccount.isEmailValid("abc@-mail.com")); // invalid use of '-', border
+        assertFalse(BankAccount.isEmailValid("abc@mail-.com")); // invalid use of '-', border
+        assertTrue(BankAccount.isEmailValid("abc@mail-archive.com")); // valid use of '-' in domain label, other border
 
-    Also I would make checks in the equivalence class of valid email domains including:
-        - Two letter TLDs (border case)
-        - Dashes in the domain
-    */
-}
+        // Equivalence class of domain cannot start/end with a .
+        assertFalse(BankAccount.isEmailValid("abc@.mail.com")); // invalid use of '.', border
+        assertFalse(BankAccount.isEmailValid("abc@mail.com.")); // invalid use of '.', border
+        assertTrue(BankAccount.isEmailValid("abc@mail.com")); // valid use of '.', other border
+
+        /* 
+        Notes:
+        I would add more checks for in the equivalence class of valid email prefixes including the cases of:
+            - Valid use of dashes in the email prefix
+            - Valid use of "." in the email prefix
+            - Valid use of "_" in the email prefix
+
+        Also I would make checks in the equivalence class of valid email domains including:
+            - Two letter TLDs (border case)
+            - Dashes in the domain
+        */
+    }
 
     
     @Test
