@@ -35,6 +35,9 @@ public class BankAccount {
      * @post If amount is between 0 and balance (inclusive), balance is reduced by amount.
      */
     public void withdraw (double amount) throws InsufficientFundsException{
+        if (amount < 0) {
+            throw new IllegalArgumentException("Cannot withdraw a negative amount.");
+        }
         if (amount <= balance){
             balance -= amount;
         }
