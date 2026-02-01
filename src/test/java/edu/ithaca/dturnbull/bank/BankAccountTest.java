@@ -13,6 +13,38 @@ class BankAccountTest {
         assertEquals(200, bankAccount.getBalance(), 0.001);
     }
 
+
+    @Test
+    void getBalance_zero_boundary() {
+        // Equivalence class of balance == 0, border
+        BankAccount acct = new BankAccount("a@b.com", 0.0);
+        assertEquals(0.0, acct.getBalance(), 0.001);
+    }
+
+    @Test
+    void getBalance_negative_middle() {
+        // Equivalence class of balance < 0, middle
+        BankAccount acct = new BankAccount("a@b.com", -50.0);
+        assertEquals(-50.0, acct.getBalance(), 0.001);
+    }
+
+    @Test
+    void getBalance_updates_after_valid_withdraw() throws InsufficientFundsException {
+        // Equivalence class of balance reflects state change after successful withdraw
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        acct.withdraw(25.0);
+        assertEquals(175.0, acct.getBalance(), 0.001);
+    }
+
+    @Test
+    void getBalance_unchanged_after_failed_withdraw() {
+        // Equivalence classof  balance unchanged when withdraw throws exception
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+
+        assertThrows(InsufficientFundsException.class, () -> acct.withdraw(1000.0));
+        assertEquals(200.0, acct.getBalance(), 0.001);
+    }
+
     @Test
     void withdraw_middle_valid() throws InsufficientFundsException {
         // Equivalence class of 0 < amount < balance, middle
