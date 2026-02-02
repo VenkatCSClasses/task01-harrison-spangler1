@@ -21,12 +21,6 @@ class BankAccountTest {
         assertEquals(0.0, acct.getBalance(), 0.001);
     }
 
-    @Test
-    void getBalance_negative_middle() {
-        // Equivalence class of balance < 0, middle
-        BankAccount acct = new BankAccount("a@b.com", -50.0);
-        assertEquals(-50.0, acct.getBalance(), 0.001);
-    }
 
     @Test
     void getBalance_updates_after_valid_withdraw() throws InsufficientFundsException {
@@ -92,6 +86,15 @@ class BankAccountTest {
         // Equivalence class of amount < 0, middle
         BankAccount acct = new BankAccount("a@b.com", 200.0);
         assertThrows(IllegalArgumentException.class, () -> acct.withdraw(-50.0)); // middle
+    }
+
+    @Test
+    void withdraw_more_than_two_decimals_invalid() {
+        // Equivalence class of amount with more than 2 decimal places, border
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+
+        assertThrows(IllegalArgumentException.class, () -> acct.withdraw(10.999)); // invalid
+        assertEquals(200.0, acct.getBalance(), 0.001); // balance unchanged
     }
 
 
@@ -183,6 +186,12 @@ class BankAccountTest {
         assertEquals(200, bankAccount.getBalance(), 0.001);
         //check for exception thrown correctly
         assertThrows(IllegalArgumentException.class, ()-> new BankAccount("", 100));
+        
+        // Exception due to negative starting balance 
+        assertThrows(IllegalArgumentException.class, () -> new BankAccount("a@b.com", -1.0));
+
+        // Exception due to invalid starting balance with more than 2 decimal places
+        assertThrows(IllegalArgumentException.class, () -> new BankAccount("a@b.com", 10.999));
     }
 
 
