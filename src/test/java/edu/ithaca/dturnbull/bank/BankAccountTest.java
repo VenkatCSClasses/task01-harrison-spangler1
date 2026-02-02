@@ -185,4 +185,45 @@ class BankAccountTest {
         assertThrows(IllegalArgumentException.class, ()-> new BankAccount("", 100));
     }
 
+
+    @Test
+    void isAmountValidTest(){
+        // Equivalence class of valid amounts
+        assertTrue(BankAccount.isAmountValid(100)); // whole number, middle
+        assertTrue(BankAccount.isAmountValid(999999999)); // large whole number, border
+        assertTrue(BankAccount.isAmountValid(50)); // whole number, middle
+        assertTrue(BankAccount.isAmountValid(1)); // small whole number, border
+        assertTrue(BankAccount.isAmountValid(10)); // whole number, middle
+
+        // Equivalence class of amounts with decimals
+        assertTrue(BankAccount.isAmountValid(99.99)); // two decimal places, border
+        assertTrue(BankAccount.isAmountValid(0.01)); // two decimal places, middle
+        assertTrue(BankAccount.isAmountValid(50.00)); // two decimal places, middle
+        assertTrue(BankAccount.isAmountValid(100000000000.10)); // two decimal place, border
+        assertTrue(BankAccount.isAmountValid(25.50)); // two decimal place, middle
+        assertTrue(BankAccount.isAmountValid(12.3));  // one decimal place, middle 
+        assertTrue(BankAccount.isAmountValid(5.5));  // one decimal place, middle
+        assertTrue(BankAccount.isAmountValid(1.23)); // two decimal places, border
+        assertTrue(BankAccount.isAmountValid(0.1)); // one decimal place, border
+
+        // Equivalence class of invalid amounts
+        assertFalse(BankAccount.isAmountValid(0)); // zero amount, border
+        assertFalse(BankAccount.isAmountValid(-100)); // negative whole number, middle
+        assertFalse(BankAccount.isAmountValid(-50)); // negative whole number, middle
+        assertFalse(BankAccount.isAmountValid(-9999999)); // large negative whole number, border
+        assertFalse(BankAccount.isAmountValid(-5000)); // negative whole number, middle
+        assertFalse(BankAccount.isAmountValid(-1)); // negative whole number, border
+
+        // Equivalence class of invalid amounts with decimal places
+        assertFalse(BankAccount.isAmountValid(25.999)); // three decimal places, middle
+        assertFalse(BankAccount.isAmountValid(0.001)); // three decimal places, border
+        assertFalse(BankAccount.isAmountValid(100.23444444444)); // many decimal places, middle
+        assertFalse(BankAccount.isAmountValid(50.5555555)); // many decimal places, middle
+        assertFalse(BankAccount.isAmountValid(-0.001)); // three decimal places negative, border
+        assertFalse(BankAccount.isAmountValid(-100.12333333)); // many decimal places negative, middle
+        assertFalse(BankAccount.isAmountValid(-0.01)); // two decimal places negative, border
+        assertFalse(BankAccount.isAmountValid(0.0)); // zero with decimal, border
+        assertFalse(BankAccount.isAmountValid(-0.0)); // zero with decimal, border
+        assertFalse(BankAccount.isAmountValid(1.234)); // three decimal places, invalid
+    }
 }

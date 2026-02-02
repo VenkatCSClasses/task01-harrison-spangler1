@@ -27,6 +27,17 @@ public class BankAccount {
     }
 
     /**
+     * Checks if the amount is positive and has no more than 2 decimals
+     * 
+     * @param amount the amount of money to check
+     * @return true if amount is valid, false otherwise
+     */
+    public static boolean isAmountValid(double amount){
+        return false;
+    }
+
+    
+    /**
      * Withdraws money from this account.
      *
      * @param amount the amount to withdraw
