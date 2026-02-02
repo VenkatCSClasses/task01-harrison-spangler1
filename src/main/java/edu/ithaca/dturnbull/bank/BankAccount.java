@@ -32,11 +32,25 @@ public class BankAccount {
      * @param amount the amount of money to check
      * @return true if amount is valid, false otherwise
      */
-    public static boolean isAmountValid(double amount){
-        return false;
+    public static boolean isAmountValid(double amount) {
+        if (amount <= 0) {
+            return false;
+        }
+
+        double cents = amount * 100;
+        long rounded = Math.round(cents);
+
+        if (Math.abs(cents - rounded) < 0.000000001) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    
+
+
+
+
     /**
      * Withdraws money from this account.
      *
