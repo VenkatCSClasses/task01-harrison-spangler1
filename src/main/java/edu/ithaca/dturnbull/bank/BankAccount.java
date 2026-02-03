@@ -111,8 +111,17 @@ public class BankAccount {
      * @post if amount is valid and greater than 0, balance increases by that amount
      */
     public void deposit(double amount) {
-        // implementing later
+        if (amount == 0.0) {
+            return;
+        }
+
+        if (!isAmountValid(amount)) {
+            throw new IllegalArgumentException("Invalid deposit amount.");
+        }
+
+        balance += amount;
     }
+
 
     /**
      * Transfers money from this account to another account
@@ -124,7 +133,21 @@ public class BankAccount {
      * @post if success, this balance decreases by the amount and toAccount balance increases by the same amount.
      */
     public void transfer(BankAccount toAccount, double amount) throws InsufficientFundsException {
-        // implementing later
+        if (toAccount == null) {
+            throw new IllegalArgumentException("toAccount cannot be null.");
+        }
+
+        if (amount == 0.0) {
+            return;
+        }
+
+        if (!isAmountValid(amount)) {
+            throw new IllegalArgumentException("Invalid transfer amount.");
+        }
+
+        this.withdraw(amount);
+        toAccount.deposit(amount);
     }
+
 
 }
