@@ -102,4 +102,29 @@ public class BankAccount {
         // Check if the TLD is at least 2 characters and contains no illegal characters
         return tld.matches("[A-Za-z]{2,}");
     }
+
+    /**
+     * Deposits money into this account.
+     *
+     * @param amount the amount of money to deposit
+     * @throws IllegalArgumentException if amount is invalid being negative or more than 2 decimal places
+     * @post if amount is valid and greater than 0, balance increases by that amount
+     */
+    public void deposit(double amount) {
+        // implementing later
+    }
+
+    /**
+     * Transfers money from this account to another account
+     *
+     * @param toAccount the account that is receiving the money
+     * @param amount the amount of money to transfer
+     * @throws IllegalArgumentException if toAccount is null or amount is invalid being negative or more than 2 decimal places
+     * @throws InsufficientFundsException if amount is greater than the current balance
+     * @post if success, this balance decreases by the amount and toAccount balance increases by the same amount.
+     */
+    public void transfer(BankAccount toAccount, double amount) throws InsufficientFundsException {
+        // implementing later
+    }
+
 }

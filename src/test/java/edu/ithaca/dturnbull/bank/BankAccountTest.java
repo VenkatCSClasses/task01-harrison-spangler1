@@ -235,4 +235,77 @@ class BankAccountTest {
         assertFalse(BankAccount.isAmountValid(-0.0)); // zero with decimal, border
         assertFalse(BankAccount.isAmountValid(1.234)); // three decimal places, invalid
     }
+
+    @Test
+    void deposit_valid_middle() {
+        // Equivalence class of valid deposit, middle
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        acct.deposit(50.0); // middle
+        assertEquals(250.0, acct.getBalance(), 0.001);
+    }
+
+    @Test
+    void deposit_valid_two_decimals_border() {
+        // Equivalence class of valid deposit with 2 decimals, border
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        acct.deposit(0.01); // border
+        assertEquals(200.01, acct.getBalance(), 0.001);
+    }
+
+    @Test
+    void deposit_valid_one_decimal_border() {
+        // Equivalence class of valid deposit with 1 decimal, border-ish
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        acct.deposit(0.1); // border
+        assertEquals(200.1, acct.getBalance(), 0.001);
+    }
+
+    @Test
+    void deposit_zero_boundary() {
+        // Equivalence class of amount equal to 0, border
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        acct.deposit(0.0); // border
+        assertEquals(200.0, acct.getBalance(), 0.001);
+    }
+
+    @Test
+    void deposit_negative_invalid() {
+        // Equivalence class: of amount less than 0, border
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        assertThrows(IllegalArgumentException.class, () -> acct.deposit(-0.01)); // border
+        assertEquals(200.0, acct.getBalance(), 0.001);
+    }
+
+    @Test
+    void deposit_more_than_two_decimals_invalid() {
+        // Equivalence class of amount has more than 2 decimals, border
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        assertThrows(IllegalArgumentException.class, () -> acct.deposit(10.999)); // border
+        assertEquals(200.0, acct.getBalance(), 0.001);
+    }
+
+    @Test
+    void deposit_valid_two_decimals_middle() {
+        // Equivalence class of valid deposit with 2 decimals, middle
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        acct.deposit(25.50);
+        assertEquals(225.50, acct.getBalance(), 0.001);
+    }
+
+    @Test
+    void deposit_two_decimals_border_valid_side() {
+        // Equivalence class of valid deposit with 2 decimals, border
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        acct.deposit(10.99);
+        assertEquals(210.99, acct.getBalance(), 0.001);
+    }
+
+    @Test
+    void deposit_large_valid_border() {
+        // Equivalence class of valid large deposit, border
+        BankAccount acct = new BankAccount("a@b.com", 200.0);
+        acct.deposit(999999999.99);
+        assertEquals(1000000199.99, acct.getBalance(), 0.001);
+    }
+
 }
