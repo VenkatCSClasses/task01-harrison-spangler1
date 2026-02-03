@@ -111,43 +111,43 @@ public class BankAccount {
      * @post if amount is valid and greater than 0, balance increases by that amount
      */
     public void deposit(double amount) {
-        if (amount == 0.0) {
-            return;
-        }
+        // if (amount == 0.0) {
+        //     return;
+        // }
 
-        if (!isAmountValid(amount)) {
-            throw new IllegalArgumentException("Invalid deposit amount.");
-        }
+        // if (!isAmountValid(amount)) {
+        //     throw new IllegalArgumentException("Invalid deposit amount.");
+        // }
 
-        balance += amount;
+        // balance += amount;
     }
 
 
-    /**
-     * Transfers money from this account to another account
-     *
-     * @param toAccount the account that is receiving the money
-     * @param amount the amount of money to transfer
-     * @throws IllegalArgumentException if toAccount is null or amount is invalid being negative or more than 2 decimal places
-     * @throws InsufficientFundsException if amount is greater than the current balance
-     * @post if success, this balance decreases by the amount and toAccount balance increases by the same amount.
-     */
-    public void transfer(BankAccount toAccount, double amount) throws InsufficientFundsException {
-        if (toAccount == null) {
-            throw new IllegalArgumentException("toAccount cannot be null.");
-        }
+    // /**
+    //  * Transfers money from this account to another account
+    //  *
+    //  * @param toAccount the account that is receiving the money
+    //  * @param amount the amount of money to transfer
+    //  * @throws IllegalArgumentException if toAccount is null or amount is invalid being negative or more than 2 decimal places
+    //  * @throws InsufficientFundsException if amount is greater than the current balance
+    //  * @post if success, this balance decreases by the amount and toAccount balance increases by the same amount.
+    //  */
+    // public void transfer(BankAccount toAccount, double amount) throws InsufficientFundsException {
+    //     // if (toAccount == null) {
+    //     //     throw new IllegalArgumentException("toAccount cannot be null.");
+    //     // }
 
-        if (amount == 0.0) {
-            return;
-        }
+    //     // if (amount == 0.0) {
+    //     //     return;
+    //     // }
 
-        if (!isAmountValid(amount)) {
-            throw new IllegalArgumentException("Invalid transfer amount.");
-        }
+    //     // if (!isAmountValid(amount)) {
+    //     //     throw new IllegalArgumentException("Invalid transfer amount.");
+    //     // }
 
-        this.withdraw(amount);
-        toAccount.deposit(amount);
-    }
+    //     // this.withdraw(amount);
+    //     // toAccount.deposit(amount);
+    // }
 
 
 }
