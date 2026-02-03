@@ -111,15 +111,15 @@ public class BankAccount {
      * @post if amount is valid and greater than 0, balance increases by that amount
      */
     public void deposit(double amount) {
-        // if (amount == 0.0) {
-        //     return;
-        // }
+        if (amount == 0.0) {
+            return;
+        }
 
-        // if (!isAmountValid(amount)) {
-        //     throw new IllegalArgumentException("Invalid deposit amount.");
-        // }
+        if (!isAmountValid(amount)) {
+            throw new IllegalArgumentException("Invalid deposit amount.");
+        }
 
-        // balance += amount;
+        balance += amount;
     }
 
 
