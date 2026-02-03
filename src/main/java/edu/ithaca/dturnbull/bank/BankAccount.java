@@ -123,16 +123,16 @@ public class BankAccount {
     }
 
 
-    // /**
-    //  * Transfers money from this account to another account
-    //  *
-    //  * @param toAccount the account that is receiving the money
-    //  * @param amount the amount of money to transfer
-    //  * @throws IllegalArgumentException if toAccount is null or amount is invalid being negative or more than 2 decimal places
-    //  * @throws InsufficientFundsException if amount is greater than the current balance
-    //  * @post if success, this balance decreases by the amount and toAccount balance increases by the same amount.
-    //  */
-    // public void transfer(BankAccount toAccount, double amount) throws InsufficientFundsException {
+    /**
+     * Transfers money from this account to another account
+     *
+     * @param toAccount the account that is receiving the money
+     * @param amount the amount of money to transfer
+     * @throws IllegalArgumentException if toAccount is null or amount is invalid being negative or more than 2 decimal places
+     * @throws InsufficientFundsException if amount is greater than the current balance
+     * @post if success, this balance decreases by the amount and toAccount balance increases by the same amount.
+     */
+    public void transfer(BankAccount toAccount, double amount) throws InsufficientFundsException {
     //     // if (toAccount == null) {
     //     //     throw new IllegalArgumentException("toAccount cannot be null.");
     //     // }
@@ -147,7 +147,7 @@ public class BankAccount {
 
     //     // this.withdraw(amount);
     //     // toAccount.deposit(amount);
-    // }
+    }
 
 
 }

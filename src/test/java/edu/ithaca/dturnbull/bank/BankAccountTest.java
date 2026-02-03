@@ -308,95 +308,95 @@ class BankAccountTest {
         assertEquals(1000000199.99, acct.getBalance(), 0.001);
     }
 
-    // @Test
-    // void transfer_valid_middle() throws InsufficientFundsException {
-    //     // Equivalence class of valid transfer, middle
-    //     BankAccount from = new BankAccount("a@b.com", 200.0);
-    //     BankAccount to = new BankAccount("c@d.com", 50.0);
+    @Test
+    void transfer_valid_middle() throws InsufficientFundsException {
+        // Equivalence class of valid transfer, middle
+        BankAccount from = new BankAccount("a@b.com", 200.0);
+        BankAccount to = new BankAccount("c@d.com", 50.0);
 
-    //     from.transfer(to, 100.0); // middle
+        from.transfer(to, 100.0); // middle
 
-    //     assertEquals(100.0, from.getBalance(), 0.001);
-    //     assertEquals(150.0, to.getBalance(), 0.001);
-    // }
+        assertEquals(100.0, from.getBalance(), 0.001);
+        assertEquals(150.0, to.getBalance(), 0.001);
+    }
 
-    // @Test
-    // void transfer_valid_two_decimals_border_small() throws InsufficientFundsException {
-    //     // Equivalence class of valid transfer with 2 decimals, border
-    //     BankAccount from = new BankAccount("a@b.com", 200.0);
-    //     BankAccount to = new BankAccount("c@d.com", 50.0);
+    @Test
+    void transfer_valid_two_decimals_border_small() throws InsufficientFundsException {
+        // Equivalence class of valid transfer with 2 decimals, border
+        BankAccount from = new BankAccount("a@b.com", 200.0);
+        BankAccount to = new BankAccount("c@d.com", 50.0);
 
-    //     from.transfer(to, 0.01); // border
+        from.transfer(to, 0.01); // border
 
-    //     assertEquals(199.99, from.getBalance(), 0.001);
-    //     assertEquals(50.01, to.getBalance(), 0.001);
-    // }
+        assertEquals(199.99, from.getBalance(), 0.001);
+        assertEquals(50.01, to.getBalance(), 0.001);
+    }
 
-    // @Test
-    // void transfer_equals_balance_boundary() throws InsufficientFundsException {
-    //     // Equivalence class of amount equals balance, border
-    //     BankAccount from = new BankAccount("a@b.com", 200.0);
-    //     BankAccount to = new BankAccount("c@d.com", 50.0);
+    @Test
+    void transfer_equals_balance_boundary() throws InsufficientFundsException {
+        // Equivalence class of amount equals balance, border
+        BankAccount from = new BankAccount("a@b.com", 200.0);
+        BankAccount to = new BankAccount("c@d.com", 50.0);
 
-    //     from.transfer(to, 200.0); // border
+        from.transfer(to, 200.0); // border
 
-    //     assertEquals(0.0, from.getBalance(), 0.001);
-    //     assertEquals(250.0, to.getBalance(), 0.001);
-    // }
+        assertEquals(0.0, from.getBalance(), 0.001);
+        assertEquals(250.0, to.getBalance(), 0.001);
+    }
 
-    // @Test
-    // void transfer_zero_boundary() throws InsufficientFundsException {
-    //     // Equivalence class of amount equals 0, border
-    //     BankAccount from = new BankAccount("a@b.com", 200.0);
-    //     BankAccount to = new BankAccount("c@d.com", 50.0);
+    @Test
+    void transfer_zero_boundary() throws InsufficientFundsException {
+        // Equivalence class of amount equals 0, border
+        BankAccount from = new BankAccount("a@b.com", 200.0);
+        BankAccount to = new BankAccount("c@d.com", 50.0);
 
-    //     from.transfer(to, 0.0); // border
+        from.transfer(to, 0.0); // border
 
-    //     assertEquals(200.0, from.getBalance(), 0.001);
-    //     assertEquals(50.0, to.getBalance(), 0.001);
-    // }
+        assertEquals(200.0, from.getBalance(), 0.001);
+        assertEquals(50.0, to.getBalance(), 0.001);
+    }
 
-    // @Test
-    // void transfer_null_account_invalid() {
-    //     // Equivalence class of toAccount is null, border
-    //     BankAccount from = new BankAccount("a@b.com", 200.0);
+    @Test
+    void transfer_null_account_invalid() {
+        // Equivalence class of toAccount is null, border
+        BankAccount from = new BankAccount("a@b.com", 200.0);
 
-    //     assertThrows(IllegalArgumentException.class, () -> from.transfer(null, 10.0));
-    //     assertEquals(200.0, from.getBalance(), 0.001);
-    // }
+        assertThrows(IllegalArgumentException.class, () -> from.transfer(null, 10.0));
+        assertEquals(200.0, from.getBalance(), 0.001);
+    }
 
-    // @Test
-    // void transfer_negative_amount_invalid() {
-    //     // Equivalence class of amount less than 0, border
-    //     BankAccount from = new BankAccount("a@b.com", 200.0);
-    //     BankAccount to = new BankAccount("c@d.com", 50.0);
+    @Test
+    void transfer_negative_amount_invalid() {
+        // Equivalence class of amount less than 0, border
+        BankAccount from = new BankAccount("a@b.com", 200.0);
+        BankAccount to = new BankAccount("c@d.com", 50.0);
 
-    //     assertThrows(IllegalArgumentException.class, () -> from.transfer(to, -0.01));
-    //     assertEquals(200.0, from.getBalance(), 0.001);
-    //     assertEquals(50.0, to.getBalance(), 0.001);
-    // }
+        assertThrows(IllegalArgumentException.class, () -> from.transfer(to, -0.01));
+        assertEquals(200.0, from.getBalance(), 0.001);
+        assertEquals(50.0, to.getBalance(), 0.001);
+    }
 
-    // @Test
-    // void transfer_more_than_two_decimals_invalid() {
-    //     // Equivalence class of amount has > 2 decimals, border
-    //     BankAccount from = new BankAccount("a@b.com", 200.0);
-    //     BankAccount to = new BankAccount("c@d.com", 50.0);
+    @Test
+    void transfer_more_than_two_decimals_invalid() {
+        // Equivalence class of amount has > 2 decimals, border
+        BankAccount from = new BankAccount("a@b.com", 200.0);
+        BankAccount to = new BankAccount("c@d.com", 50.0);
 
-    //     assertThrows(IllegalArgumentException.class, () -> from.transfer(to, 10.999));
-    //     assertEquals(200.0, from.getBalance(), 0.001);
-    //     assertEquals(50.0, to.getBalance(), 0.001);
-    // }
+        assertThrows(IllegalArgumentException.class, () -> from.transfer(to, 10.999));
+        assertEquals(200.0, from.getBalance(), 0.001);
+        assertEquals(50.0, to.getBalance(), 0.001);
+    }
 
-    // @Test
-    // void transfer_greater_than_balance_invalid() {
-    //     // Equivalence class of amount more than balance, border
-    //     BankAccount from = new BankAccount("a@b.com", 200.0);
-    //     BankAccount to = new BankAccount("c@d.com", 50.0);
+    @Test
+    void transfer_greater_than_balance_invalid() {
+        // Equivalence class of amount more than balance, border
+        BankAccount from = new BankAccount("a@b.com", 200.0);
+        BankAccount to = new BankAccount("c@d.com", 50.0);
 
-    //     assertThrows(InsufficientFundsException.class, () -> from.transfer(to, 200.01));
-    //     assertEquals(200.0, from.getBalance(), 0.001);
-    //     assertEquals(50.0, to.getBalance(), 0.001);
-    // }
+        assertThrows(InsufficientFundsException.class, () -> from.transfer(to, 200.01));
+        assertEquals(200.0, from.getBalance(), 0.001);
+        assertEquals(50.0, to.getBalance(), 0.001);
+    }
 
 
 }
